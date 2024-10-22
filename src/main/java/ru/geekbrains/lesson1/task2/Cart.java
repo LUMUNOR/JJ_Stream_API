@@ -47,11 +47,22 @@ public class Cart <T extends Food>{
      */
     public void cardBalancing()
     {
-        boolean proteins = false;
-        boolean fats = false;
-        boolean carbohydrates = false;
+        //boolean proteins = false;
+        //boolean fats = false;
+        //boolean carbohydrates = false;
+        boolean[] pfc = new boolean[]{false,false,false};
 
-        for (var food : foodstuffs)
+        foodstuffs.forEach(food -> {
+            if (!pfc[0] && food.getProteins())
+                pfc[0] = true;
+            else
+            if (!pfc[1] && food.getFats())
+                pfc[1] = true;
+            else
+            if (!pfc[2] && food.getCarbohydrates())
+                pfc[2] = true;
+        });
+        /*for (var food : foodstuffs)
         {
             if (!proteins && food.getProteins())
                 proteins = true;
@@ -63,15 +74,33 @@ public class Cart <T extends Food>{
                 carbohydrates = true;
             if (proteins && fats && carbohydrates)
                 break;
-        }
+        }*/
 
-        if (proteins && fats && carbohydrates)
+        if (pfc[0] && pfc[1] && pfc[2])
         {
             System.out.println("Корзина уже сбалансирована по БЖУ.");
             return;
         }
 
-        for (var thing : market.getThings(Food.class))
+        market.getThings(Food.class).forEach(thing -> {
+            if (!pfc[0] && thing.getProteins())
+            {
+                pfc[0] = true;
+                foodstuffs.add((T)thing);
+            }
+            else if (!pfc[1] && thing.getFats())
+            {
+                pfc[1] = true;
+                foodstuffs.add((T)thing);
+            }
+            else if (!pfc[2] && thing.getCarbohydrates())
+            {
+                pfc[2] = true;
+                foodstuffs.add((T)thing);
+            }
+        });
+
+        /*for (var thing : market.getThings(Food.class))
         {
             if (!proteins && thing.getProteins())
             {
@@ -90,9 +119,9 @@ public class Cart <T extends Food>{
             }
             if (proteins && fats && carbohydrates)
                 break;
-        }
+        }*/
 
-        if (proteins && fats && carbohydrates)
+        if (pfc[0] && pfc[1] && pfc[2])
             System.out.println("Корзина сбалансирована по БЖУ.");
         else
             System.out.println("Невозможно сбалансировать корзину по БЖУ.");

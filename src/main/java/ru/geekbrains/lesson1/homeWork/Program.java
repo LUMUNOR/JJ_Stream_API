@@ -13,7 +13,12 @@ public class Program {
             integerList.add(rnd.nextInt(10));
         }
         System.out.println(integerList);
-
+        System.out.println(integerList.stream()
+                .filter(integer -> integer % 2 == 0 ).toList());
+        System.out.println(integerList.stream()
+                .filter(integer -> integer % 2 == 0 )
+                .mapToInt(integer -> integer)
+                .average());
 
     }
 }
